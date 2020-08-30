@@ -18,7 +18,8 @@ class ItemData {
   // 把时间ms数转成日期对象
   toSelfDateStr(time:number):string {
     let date = new Date(time);
-    let str = date.getFullYear() +'-'+ date.getMonth()+1 + '-' + date.getDate();
+    let month = date.getMonth()+1;
+    let str = date.getFullYear() +'-'+ month + '-' + date.getDate();
     return str
   }
 }
