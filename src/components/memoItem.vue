@@ -6,12 +6,12 @@
         <a href="#">编辑</a>
       </li>
       <li>
-        <a href="#">删除</a>
+        <a href="#" @click.prevent="deletea">删除</a>
       </li>
     </ul>
     <h6>
       <span>{{memo.createTime}}</span>
-      <span>分类： {{memo.categoryId}} </span>
+      <span>分类：{{$store.state.aHelper.getCategoryName(memo.categoryId)}} </span>
     </h6>
     <div class="content">
       {{memo.content}}
@@ -27,6 +27,12 @@ import ItemData from '../model/itemData';
 @Component
 export default class MemoItem extends Vue {
   @Prop() memo!:ItemData;
+
+  // 删除方法
+  deletea():void {
+    if(!window.confirm(`确认要删除${this.memo.title}的笔记吗`)) return;
+    this.$store.state.aHelper.remove(this.memo.id);
+  }
 }
 </script>
 

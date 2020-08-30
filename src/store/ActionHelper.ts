@@ -1,5 +1,6 @@
 import DataHelper from './DataHelper'
 import ItemData from '../model/itemData'
+import Category from '@/model/cateEnum';
 // 业务处理
 class ActionHelper {
   // 负责数据处理
@@ -10,6 +11,11 @@ class ActionHelper {
   constructor() {
     // 读取本地数据，将笔记数据保存到 this.memoList 变量中
     this.memoList = this.readData();
+  }
+
+  getCategoryName(cateId: Category) {
+    const arrNames = ['工作', '生活', '学习'];
+    return arrNames[cateId];
   }
 
   readData():Array<ItemData> {
