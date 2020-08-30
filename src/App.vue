@@ -3,7 +3,7 @@
     <!-- 菜单栏 -->
     <menu-bar />
     <item-list />
-    <memo-edit />
+    <memo-edit v-show="$store.state.isShow"/>
     <router-view/>
   </div>
 </template>

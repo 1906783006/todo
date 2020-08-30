@@ -15,7 +15,7 @@ import {Component, Vue} from 'vue-property-decorator'
 export default class MenuBar extends Vue {
   // 新增一条memo
   addMemo():void {
-    
+    this.$store.state.isShow = true
   }
 }
 </script>

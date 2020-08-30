@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    aHelper: new ActionHelper()
+    aHelper: new ActionHelper(),
+    isShow: false //控制是否显示编辑框
   },
   mutations: {
   },

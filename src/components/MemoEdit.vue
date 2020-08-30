@@ -2,17 +2,17 @@
   <div class="mask">
     <div class="memo-edit">
       <div class="header">
-        <input type="text" placeholder="标题" />
-        <button>工作</button>
-        <ul>
-          <li>工作</li>
-          <li>生活</li>
-          <li>学习</li>
-        </ul>
-        <a href="#">保存</a>
+        <input type="text" placeholder="标题" v-model="memo.title"/>
+        <select v-model="memo.categoryId" >
+          <option value=0>工作</option>
+          <option value=1>生活</option>
+          <option value=2 selected>学习</option>
+        </select>
+        <a href="#" @click.prevent="saveMemo">保存</a>
+        <a href="#" @click.prevent="closeEdit">关闭</a>
       </div>
       <div class="content">
-        <textarea name="" id="" cols="30" rows="10"></textarea>
+        <textarea id="" cols="30" rows="10" v-model="memo.content"></textarea>
       </div>
     </div>
   </div>
@@ -24,7 +24,21 @@ import ItemData from '../model/itemData'
 
 @Component
 export default class MemoEdit extends Vue {
-  memo!:ItemData;
+  memo:ItemData = new ItemData();
+
+  closeEdit():void {
+    this.$store.state.isShow = false;
+  }
+  // 保存新文章
+  saveMemo():void {
+    if(this.memo && this.memo.categoryId > -1 && this.memo.title.trim().length > 0 && this.memo.content.trim().length > 0) {
+      this.$store.state.aHelper.add(this.memo);
+      this.$store.state.isShow = false;
+    } else {
+      window.alert('对不起，输入错误');
+    }
+    
+  }
 }
 </script>
 
@@ -42,5 +56,10 @@ export default class MemoEdit extends Vue {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    a {
+      &:hover {
+        color: #fefefe;
+      }
+    }
   }
 </style>
