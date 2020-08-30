@@ -1,20 +1,22 @@
 <template>
   <nav class="nav">
     <div class="btn">
-      <a>新建</a>
-      <a>全部</a>
-      <a>3</a>
+      <a @click.prevent="addMemo">新建</a>
+      <span>全部</span>
+      <span>3</span>
     </div>
   </nav>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
-import { component } from 'vue/types/umd';
 
 @Component
 export default class MenuBar extends Vue {
-
+  // 新增一条memo
+  addMemo():void {
+    
+  }
 }
 </script>
 
