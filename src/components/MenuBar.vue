@@ -10,11 +10,14 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
+import ItemData from '../model/itemData'
 
 @Component
 export default class MenuBar extends Vue {
   // 新增一条memo
   addMemo():void {
+    // 点击新增，创建一个ItemData ，它的 id 默认为 -1 表示新增
+    this.$store.state.transMemo = new ItemData();
     this.$store.state.isShow = true
   }
 }

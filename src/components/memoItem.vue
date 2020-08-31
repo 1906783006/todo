@@ -3,7 +3,7 @@
     <h5> {{memo.title}} </h5>
     <ul class="tools">
       <li>
-        <a href="#">编辑</a>
+        <a href="#" @click.prevent="editMemo">编辑</a>
       </li>
       <li>
         <a href="#" @click.prevent="deletea">删除</a>
@@ -32,6 +32,13 @@ export default class MemoItem extends Vue {
   deletea():void {
     if(!window.confirm(`确认要删除${this.memo.title}的笔记吗`)) return;
     this.$store.state.aHelper.remove(this.memo.id);
+  }
+  // 编辑一条memo
+  editMemo():void {
+    // let newMemo = JSON.parse(JSON.stringify(this.memo));
+    let newMemo:ItemData = this.memo;
+    
+    this.$store.commit('showEditMemo', newMemo);
   }
 }
 </script>

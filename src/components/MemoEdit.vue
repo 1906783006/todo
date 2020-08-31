@@ -26,18 +26,27 @@ import ItemData from '../model/itemData'
 export default class MemoEdit extends Vue {
   memo:ItemData = new ItemData();
 
+  created():void {    
+    this.memo = this.$store.state.transMemo;
+  }
+
   closeEdit():void {
     this.$store.state.isShow = false;
   }
   // 保存新文章
   saveMemo():void {
-    if(this.memo && this.memo.categoryId > -1 && this.memo.title.trim().length > 0 && this.memo.content.trim().length > 0) {
-      this.$store.state.aHelper.add(this.memo);
-      this.$store.state.isShow = false;
-    } else {
-      window.alert('对不起，输入错误');
+    // 判断保存时是新增数据还是编辑数据
+    if(this.memo.id <= -1) { //新增
+      if(this.memo && this.memo.categoryId > -1 && this.memo.title.trim().length > 0 && this.memo.content.trim().length > 0) {
+        this.$store.state.aHelper.add(this.memo);
+      } else {
+        window.alert('对不起，输入错误');
+      }
+    } else { //编辑
+      this.$store.state.aHelper.edit(this.memo);
     }
     
+    this.$store.state.isShow = false;
   }
 }
 </script>
