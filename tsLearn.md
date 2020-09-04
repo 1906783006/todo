@@ -181,3 +181,133 @@ let p:Named = new Person();
 - 结构类型是一种用成员来描述类型的方式
 
 - 名义类型是明确的声明
+
+### 开始
+
+```typescript
+interface Named {
+    name: string;
+}
+
+let x: Named;
+// y 的类型都能在 x 里找到 
+let y = { name: 'Alice', location: 'Seattle' };
+x = y;
+```
+
+## 装饰器
+
+### 类装饰器
+
+- 修改类
+
+```typescript
+//定义类装饰器 target 为传入的构造函数
+function sealed(target:Function) {
+    Object.seal(target); //Object.seal() 方法为密封类的构造函数和原型
+    Object.seal(target.prototype);
+}
+
+@sealed
+class Greeter {
+    greet:string;
+    constructor(greet:string) {
+        this.greet = greet;
+    }
+    greeting() {
+        console.log(this.greet);
+        
+    }
+}
+```
+
+- 重载构造函数
+
+```typescript
+function classDecoration<T extends {new (...args:any[]):{}}>(constructor:T) {   
+    return class extends constructor {
+        newProperty = 'new property';
+        hello = 'hello';
+    }
+}
+
+@classDecoration
+class Greeter {
+    property = 'property';
+    hello:string;
+    constructor(s:string) {
+        this.hello = s;
+    }
+}
+console.log(new Greeter('nihao'));
+//控制台输出为：
+// {property: "property", hello: "hello", newProperty: "new property"}
+// hello: "hello"
+// newProperty: "new property"
+// property: "property"
+// __proto__: Greeter
+```
+
+### 方法装饰器
+
+方法装饰器会被应用到方法的  *属性描述符*   上，可以用来监视，修改或者替换方法定义。 
+
+```type
+//这里使用了装饰器工厂，可以传入参数value
+function enumerable(value: boolean) {
+	//方法装饰器
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {  
+        descriptor.enumerable = value;
+    };
+}
+
+class Greeter {
+    greeting: string;
+    constructor(message: string) {
+        this.greeting = message;
+    }
+    @enumerable(false)
+    greet() {
+        return "Hello, " + this.greeting;
+    }
+}
+```
+
+- 方法装饰器可以传入三个参数
+  - target：对于静态成员来说是类的构造函数，对于实例成员是类的原型对象
+  - propertyKey：成员名字
+  - descriptor: 成员的属性描述符
+- 如果方法装饰器返回一个值，它会被用作方法的  *属性描述符* 
+
+### 访问器装饰器
+
+访问器装饰器被应用到访问器的 *属性描述符* 上，可以用来监视，修改或替换一个访问器的定义。
+
+注意： TypeScript不允许同时装饰一个成员的`get`和`set`访问器。取而代之的是，一个成员的所有装饰的必须应用在文档顺序的第一个访问器上。这是因为，在装饰器应用于一个*属性描述符*时，它联合了`get`和`set`访问器，而不是分开声明的。
+
+```typescript
+class Point {
+    private _x: number;
+    private _y: number;
+    constructor(x: number, y: number) {
+        this._x = x;
+        this._y = y;
+    }
+
+    @configurable(true)
+    get x() { return this._x; }
+
+    @configurable(false)
+    get y() { return this._y; }
+}
+
+function configurable(value: boolean) {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+        descriptor.configurable = value;
+    };
+}
+
+let point = new Point(1, 2);
+console.log(point.x); //1
+```
+
